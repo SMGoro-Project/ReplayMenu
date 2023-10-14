@@ -1,0 +1,28 @@
+database:
+  hostname: localhost:3306
+  database: replaysystem_db
+  user: replaysystem_user
+  password: 123456
+  connection-parameters: "?autoReconnect=true&initialTimeout=1&useSSL=false"
+
+use-name-instead-of-uuid: false
+is-replay-server: false
+replay-server: "replay"
+
+# use command instead of api to play a replay
+use-command-play: false
+play-command: "/replay load %ID%"
+
+gui:
+  default:
+    title: "&eReplay"
+    next-page: "&aNext page"
+    previous-page: "&aPrevious page"
+    replay-item:
+      type: "RECORD_3"
+      item-name: "&eReplayID: &e%id%"
+      lore:
+        - "  &7Server: &e%name%"
+        - "  &7Duration: &e%length%"
+        - "  &7Date: &e%time%"
+        - "  &7Memory: &e%storage%"

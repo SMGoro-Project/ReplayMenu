@@ -1,0 +1,9 @@
+name: ReplayMenu
+version: '${project.version}'
+main: re.imc.replaymenu.ReplayMenu
+softdepend:
+  - ReplaySystem
+  - helper
+commands:
+  replaygui:
+    permission: "replay.gui"
