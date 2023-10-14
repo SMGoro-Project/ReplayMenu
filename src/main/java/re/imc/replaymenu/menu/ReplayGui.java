@@ -19,6 +19,7 @@ import re.imc.replaymenu.data.model.ReplayWaitForPlay;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -31,12 +32,14 @@ public class ReplayGui {
         CompletableFuture.supplyAsync(() -> {
             try {
                  ReplayHistory history = MySQLDatabase.getReplayHistoryDao().queryForId(ReplayMenu.getInstance().isUseName() ? player.getName() : player.getUniqueId().toString());
-                 return MySQLDatabase.getReplayIndexDao().queryBuilder().where().in("REPLAYID", Arrays.asList(history.replays().split(","))).query();
+                 return new ArrayList<>(MySQLDatabase.getReplayIndexDao().queryBuilder().where().in("REPLAYID", Arrays.asList(history.replays().split(","))).query());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
         }).thenAccept(list -> {
+
+            list.sort(Comparator.comparingLong(index-> Long.parseLong("-" + index.getTime())));
 
             PaginatedGuiBuilder builder = PaginatedGuiBuilder.create()
                     .title(section.getString("title"));
