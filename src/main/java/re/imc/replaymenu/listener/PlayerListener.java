@@ -30,6 +30,9 @@ public class PlayerListener implements Listener {
             }
             return null;
         }).thenAccept(data -> {
+            if (data == null) {
+                return;
+            }
             new BukkitRunnable() {
                 @Override
                 public void run() {
