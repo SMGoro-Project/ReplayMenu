@@ -71,11 +71,11 @@ public class ReplayGui {
         }
         CompletableFuture.runAsync(() -> {
             try {
-                MySQLDatabase.getReplayWaitForPlayDao().create(new ReplayWaitForPlay(player.getUniqueId().toString(), index.getReplayId()));
+                MySQLDatabase.getReplayWaitForPlayDao().createOrUpdate(new ReplayWaitForPlay(player.getUniqueId().toString(), index.getReplayId()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        }).thenAccept((v) -> {
+        }).whenCompleteAsync((t, v) -> {
             Helper.service(BungeeCord.class).ifPresent(bc -> bc.connect(player, ReplayMenu.getInstance().getConfig().getString("replay-server")));
         });
     }
