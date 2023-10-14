@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@DatabaseTable(tableName = "REPLAY_WAIT_FOR_PLAY")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@DatabaseTable(tableName = "REPLAY_WAIT_FOR_PLAY")
 public class ReplayWaitForPlay {
 
-    @DatabaseField(columnName = "UUID", id = true, width = 32)
+    @DatabaseField(columnName = "UUID", id = true, width = 36)
     private String uuid;
 
     @DatabaseField(columnName = "REPLAY")

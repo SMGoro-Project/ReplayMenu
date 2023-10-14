@@ -14,7 +14,7 @@ import java.util.UUID;
 @DatabaseTable(tableName = "REPLAYHISTORY")
 public class ReplayHistory {
 
-    @DatabaseField(columnName = "UUID", id = true, width = 32)
+    @DatabaseField(columnName = "UUID", id = true, width = 36)
     private String uuid;
 
     @DatabaseField(columnName = "REPLAYS")
