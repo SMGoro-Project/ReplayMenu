@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import re.imc.replaymenu.ReplayMenu;
 import re.imc.replaymenu.data.MySQLDatabase;
 import re.imc.replaymenu.data.model.ReplayWaitForPlay;
@@ -29,11 +30,17 @@ public class PlayerListener implements Listener {
             }
             return null;
         }).thenAccept(data -> {
-            if (ReplayMenu.getInstance().isUseCommand()) {
-                Bukkit.dispatchCommand(event.getPlayer(), ReplayMenu.getInstance().getConfig().getString("play-command").replace("%id%", data.getReplay()));
-            } else {
-                ReplayMenu.getInstance().getXReplayHolder().playReplay(event.getPlayer(), data.getReplay());
-            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (ReplayMenu.getInstance().isUseCommand()) {
+                        Bukkit.dispatchCommand(event.getPlayer(), ReplayMenu.getInstance().getConfig().getString("play-command").replace("%id%", data.getReplay()));
+                    } else {
+                        ReplayMenu.getInstance().getXReplayHolder().playReplay(event.getPlayer(), data.getReplay());
+                    }
+                }
+            }.runTask(ReplayMenu.getInstance());
+
         });
 
     }

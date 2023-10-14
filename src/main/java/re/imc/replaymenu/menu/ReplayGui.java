@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import re.imc.replaymenu.ReplayMenu;
 import re.imc.replaymenu.config.ReplayGuiConfig;
 import re.imc.replaymenu.data.MySQLDatabase;
@@ -55,7 +56,13 @@ public class ReplayGui {
                 for (ReplayIndex index : list) {
                     items.add(ItemStackBuilder.of(ReplayGuiConfig.createItemStackFromConfiguration(section.getConfigurationSection("replay-item"), index)
                     ).build(() -> {
-                        playReplay(player, index);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                playReplay(player, index);
+                            }
+                        }.runTask(ReplayMenu.getInstance());
+
                     }));
                 }
                 return items;
