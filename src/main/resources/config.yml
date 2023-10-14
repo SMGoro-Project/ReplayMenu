@@ -11,7 +11,7 @@ replay-server: "replay"
 
 # use command instead of api to play a replay
 use-command-play: false
-play-command: "/replay load %ID%"
+play-command: "/replay load %id%"
 
 gui:
   default:
