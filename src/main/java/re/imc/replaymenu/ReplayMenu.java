@@ -4,11 +4,8 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import re.imc.replaymenu.command.ReplayGuiCommand;
-import re.imc.replaymenu.data.MySQLDatabase;
 import re.imc.replaymenu.holder.XReplayHolder;
-import re.imc.replaymenu.listener.PlayerListener;
-
-import java.sql.SQLException;
+import re.imc.xreplayextendapi.spigot.SpigotPlugin;
 
 public final class ReplayMenu extends JavaPlugin {
 
@@ -33,19 +30,17 @@ public final class ReplayMenu extends JavaPlugin {
         isReplayServer = getConfig().getBoolean("is-replay-server", false);
         useCommand = getConfig().getBoolean("use-command-play");
 
-        try {
-            MySQLDatabase.load(getConfig().getConfigurationSection("database"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (isReplayServer) {
-            xReplayHolder = new XReplayHolder();
-            Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-        }
         if (Bukkit.getPluginManager().getPlugin("helper") != null) {
             Bukkit.getPluginCommand("replaygui").setExecutor(new ReplayGuiCommand());
         }
+
+        SpigotPlugin.getInstance().setReplayAction((player, id) -> {
+            if (isUseCommand()) {
+                Bukkit.dispatchCommand(player, ReplayMenu.getInstance().getConfig().getString("play-command").replace("%id%", id));
+            } else {
+                ReplayMenu.getInstance().getXReplayHolder().playReplay(player, id);
+            }
+        });
     }
 
     @Override

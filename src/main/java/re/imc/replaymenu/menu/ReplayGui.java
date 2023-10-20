@@ -12,10 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import re.imc.replaymenu.ReplayMenu;
 import re.imc.replaymenu.config.ReplayGuiConfig;
-import re.imc.replaymenu.data.MySQLDatabase;
-import re.imc.replaymenu.data.model.ReplayHistory;
-import re.imc.replaymenu.data.model.ReplayIndex;
-import re.imc.replaymenu.data.model.ReplayWaitForPlay;
+import re.imc.xreplayextendapi.XReplayExtendAPI;
+import re.imc.xreplayextendapi.data.ReplayDataManager;
+import re.imc.xreplayextendapi.data.model.ReplayHistory;
+import re.imc.xreplayextendapi.data.model.ReplayIndex;
+import re.imc.xreplayextendapi.data.model.ReplayWaitForPlay;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,15 +33,16 @@ public class ReplayGui {
 
         CompletableFuture.supplyAsync(() -> {
             try {
-                 ReplayHistory history = MySQLDatabase.getReplayHistoryDao().queryForId(ReplayMenu.getInstance().isUseName() ? player.getName() : player.getUniqueId().toString());
-                 return new ArrayList<>(MySQLDatabase.getReplayIndexDao().queryBuilder().where().in("REPLAYID", Arrays.asList(history.replays().split(","))).query());
+                ReplayDataManager manager = XReplayExtendAPI.getInstance().getReplayDataManager();
+                ReplayHistory history = manager.getReplayHistoryDao().queryForId(ReplayMenu.getInstance().isUseName() ? player.getName() : player.getUniqueId().toString());
+                return new ArrayList<>(manager.getReplayIndexDao().queryBuilder().where().in("REPLAYID", Arrays.asList(history.replays())).query());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
 
         }).thenAccept(list -> {
 
-            list.sort(Comparator.comparingLong(index-> Long.parseLong("-" + index.getTime())));
+            list.sort(Comparator.comparingLong(index-> Long.parseLong("-" + index.time())));
 
             PaginatedGuiBuilder builder = PaginatedGuiBuilder.create()
                     .title(section.getString("title"));
@@ -74,14 +76,16 @@ public class ReplayGui {
     public static void playReplay(Player player, ReplayIndex index) {
         if (ReplayMenu.getInstance().isReplayServer()) {
             if (ReplayMenu.getInstance().isUseCommand()) {
-                Bukkit.dispatchCommand(player, ReplayMenu.getInstance().getConfig().getString("play-command").replace("%id%", index.getReplayId()));
+                Bukkit.dispatchCommand(player, ReplayMenu.getInstance().getConfig().getString("play-command").replace("%id%", index.replayId()));
             } else {
-                ReplayMenu.getInstance().getXReplayHolder().playReplay(player, index.getReplayId());
+                ReplayMenu.getInstance().getXReplayHolder().playReplay(player, index.replayId());
             }
         }
         CompletableFuture.runAsync(() -> {
             try {
-                MySQLDatabase.getReplayWaitForPlayDao().createOrUpdate(new ReplayWaitForPlay(player.getUniqueId().toString(), index.getReplayId()));
+                ReplayDataManager manager = XReplayExtendAPI.getInstance().getReplayDataManager();
+
+                manager.getReplayWaitForPlayDao().createOrUpdate(new ReplayWaitForPlay(player.getUniqueId().toString(), index.replayId()));
 
             } catch (SQLException e) {
                 throw new RuntimeException(e);

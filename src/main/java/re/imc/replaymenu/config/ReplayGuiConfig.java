@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import re.imc.replaymenu.data.model.ReplayIndex;
+import re.imc.xreplayextendapi.data.model.ReplayIndex;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -49,23 +49,23 @@ public class ReplayGuiConfig {
         return String.format("%02d:%02d:%02d", hours, remainingMinutes, remainingSeconds);
     }
     public static String replacePlaceholders(String string, ReplayIndex index) {
-        string = string.replace("%id%", index.getReplayId());
-        string = string.replace("%name%", index.getReplayName());
-        string = string.replace("%type%", index.getReplayType());
-        string = string.replace("%version%", String.valueOf(index.getVersion()));
-        string = string.replace("%chunkLoc%", index.getChunkLoc());
+        string = string.replace("%id%", index.replayId());
+        string = string.replace("%name%", index.replayName());
+        string = string.replace("%type%", index.replayType());
+        string = string.replace("%version%", String.valueOf(index.version()));
+        string = string.replace("%chunkLoc%", index.chunkLoc());
 
-        Timestamp stamp = new Timestamp(Long.parseLong(index.getTime()));
+        Timestamp stamp = new Timestamp(Long.parseLong(index.time()));
         Date date = new Date(stamp.getTime());
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         string = string.replace("%time%", format.format(date));
 
-        string = string.replace("%length%", ticksToTimeFormat(index.getLength()));
-        string = string.replace("%importantLevel%", String.valueOf(index.getImportantLevel()));
-        string = string.replace("%lastView%", index.getLastView());
-        string = string.replace("%lastViewedBy%", index.getLastViewedBy());
-        string = string.replace("%views%", String.valueOf(index.getViews()));
-        string = string.replace("%storage%", index.getStorage().substring(9));
+        string = string.replace("%length%", ticksToTimeFormat(index.length()));
+        string = string.replace("%importantLevel%", String.valueOf(index.importantLevel()));
+        string = string.replace("%lastView%", index.lastView());
+        string = string.replace("%lastViewedBy%", index.lastViewedBy());
+        string = string.replace("%views%", String.valueOf(index.views()));
+        string = string.replace("%storage%", index.storage().substring(9));
 
         return string;
     }
