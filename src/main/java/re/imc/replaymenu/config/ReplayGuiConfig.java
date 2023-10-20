@@ -1,5 +1,7 @@
 package re.imc.replaymenu.config;
 
+import mc.obliviate.inventory.configurable.util.ItemStackSerializer;
+import mc.obliviate.util.placeholder.PlaceholderUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,26 +18,11 @@ import java.util.List;
 public class ReplayGuiConfig {
 
     public static ItemStack createItemStackFromConfiguration(ConfigurationSection itemConfig, ReplayIndex index) {
-        String type = itemConfig.getString("type");
-        String displayName = ChatColor.translateAlternateColorCodes('&', replacePlaceholders(itemConfig.getString("item-name"), index));
 
-        ItemStack itemStack = new ItemStack(Material.matchMaterial(type));
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        ItemStack item = ItemStackSerializer.deserializeItemStack(itemConfig);
+        ItemStackSerializer.applyPlaceholdersToItemStack(item, replayPlaceholderUtil(index));
 
-        itemMeta.setDisplayName(displayName);
-
-        if (itemConfig.contains("lore")) {
-            List<String> lore = itemConfig.getStringList("lore");
-            List<String> translatedLore = new ArrayList<>();
-            for (String line : lore) {
-                translatedLore.add(ChatColor.translateAlternateColorCodes('&', replacePlaceholders(line, index)));
-            }
-            itemMeta.setLore(translatedLore);
-        }
-
-        itemStack.setItemMeta(itemMeta);
-
-        return itemStack;
+        return item;
     }
 
     public static String ticksToTimeFormat(int ticks) {
@@ -48,25 +35,27 @@ public class ReplayGuiConfig {
 
         return String.format("%02d:%02d:%02d", hours, remainingMinutes, remainingSeconds);
     }
-    public static String replacePlaceholders(String string, ReplayIndex index) {
-        string = string.replace("%id%", index.replayId());
-        string = string.replace("%name%", index.replayName());
-        string = string.replace("%type%", index.replayType());
-        string = string.replace("%version%", String.valueOf(index.version()));
-        string = string.replace("%chunkLoc%", index.chunkLoc());
+    public static PlaceholderUtil replayPlaceholderUtil(ReplayIndex index) {
+        PlaceholderUtil placeholderUtil = new PlaceholderUtil();
+
+        placeholderUtil.add("%id%", index.replayId());
+        placeholderUtil.add("%name%", index.replayName());
+        placeholderUtil.add("%type%", index.replayType());
+        placeholderUtil.add("%version%", String.valueOf(index.version()));
+        placeholderUtil.add("%chunkLoc%", index.chunkLoc());
 
         Timestamp stamp = new Timestamp(Long.parseLong(index.time()));
         Date date = new Date(stamp.getTime());
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        string = string.replace("%time%", format.format(date));
+        placeholderUtil.add("%time%", format.format(date));
 
-        string = string.replace("%length%", ticksToTimeFormat(index.length()));
-        string = string.replace("%importantLevel%", String.valueOf(index.importantLevel()));
-        string = string.replace("%lastView%", index.lastView());
-        string = string.replace("%lastViewedBy%", index.lastViewedBy());
-        string = string.replace("%views%", String.valueOf(index.views()));
-        string = string.replace("%storage%", index.storage().substring(9));
+        placeholderUtil.add("%length%", ticksToTimeFormat(index.length()));
+        placeholderUtil.add("%importantLevel%", String.valueOf(index.importantLevel()));
+        placeholderUtil.add("%lastView%", index.lastView());
+        placeholderUtil.add("%lastViewedBy%", index.lastViewedBy());
+        placeholderUtil.add("%views%", String.valueOf(index.views()));
+        placeholderUtil.add("%storage%", index.storage().substring(9));
 
-        return string;
+        return placeholderUtil;
     }
 }

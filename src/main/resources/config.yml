@@ -1,28 +1,68 @@
-database:
-  hostname: localhost:3306
-  database: replaysystem_db
-  user: replaysystem_user
-  password: 123456
-  connection-parameters: "?autoReconnect=true&initialTimeout=1&useSSL=false"
-
 use-name-instead-of-uuid: false
 is-replay-server: false
 replay-server: "replay"
+
+max-replay-amount:
+  player: 50
+  all: 100
 
 # use command instead of api to play a replay
 use-command-play: false
 play-command: "/replay load %id%"
 
 gui:
-  default:
-    title: "&eReplay"
-    next-page: "&aNext page"
-    previous-page: "&aPrevious page"
-    replay-item:
-      type: "RECORD_3"
-      item-name: "&eReplayID: &e%id%"
-      lore:
-        - "  &7Server: &e%name%"
-        - "  &7Duration: &e%length%"
-        - "  &7Date: &e%time%"
-        - "  &7Memory: &e%storage%"
+  game-types:
+    bedwars:
+      server-name: "BedWars" # replay name
+      item:
+        material: BED
+        display-name: '&aBedWars'
+        enchantments:
+         - 'DEPTH_STRIDER:1'
+    #...
+  replay-gui:
+    title: 'Replays'
+    row: 6
+    icons:
+      filler-item:
+        material: BLACK_STAINED_GLASS_PANE
+        display-name: '&a'
+        slot: 9-17
+
+      games-previous-page:
+        material: ARROW
+        display-name: '&aPrevious Page'
+        slot: 0
+      games-next-page:
+        material: ARROW
+        display-name: '&aNext Page'
+        slot: 8
+      replays-previous-page:
+        material: ARROW
+        display-name: '&aPrevious Page'
+        slot: 45
+      replays-next-page:
+        material: ARROW
+        display-name: '&aNext Page'
+        slot: 53
+
+      games-previous-page-end:
+        material: BARRIER
+        display-name: '&aPrevious Page'
+        slot: 0
+      games-next-page-end:
+        material: BARRIER
+        display-name: '&aNext Page'
+        slot: 8
+      replays-previous-page-end:
+        material: BARRIER
+        display-name: '&aPrevious Page'
+        slot: 45
+      replays-next-page-end:
+        material: BARRIER
+        display-name: '&aNext Page'
+        slot: 53
+
+      replay:
+        material: "RECORD_3"
+        display-name: '&a%id%'

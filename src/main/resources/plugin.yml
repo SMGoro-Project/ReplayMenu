@@ -3,7 +3,6 @@ version: '${project.version}'
 main: re.imc.replaymenu.ReplayMenu
 softdepend:
   - ReplaySystem
-  - helper
 depend:
   - XReplayExtendAPI
 commands:

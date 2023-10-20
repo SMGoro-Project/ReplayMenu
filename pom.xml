@@ -40,10 +40,6 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
-                                <relocation>
-                                    <pattern>com.j256.ormlite</pattern>
-                                    <shadedPattern>re.imc.replaymenu.libs.ormlite</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -67,15 +63,13 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>helper</artifactId>
-            <version>5.6.13</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>de.musterbukkit.replaysystem.main</groupId>
             <artifactId>XReplayAPI</artifactId>
@@ -94,6 +88,18 @@
             <artifactId>spigot-api</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hamza-cskn.obliviate-invs</groupId>
+            <artifactId>core</artifactId>
+            <scope>compile</scope>
+            <version>4.1.13.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hamza-cskn.obliviate-invs</groupId>
+            <artifactId>configurablegui</artifactId>
+            <scope>compile</scope>
+            <version>4.1.13.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

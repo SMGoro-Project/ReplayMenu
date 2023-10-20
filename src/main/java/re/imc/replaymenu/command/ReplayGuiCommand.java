@@ -12,7 +12,8 @@ public class ReplayGuiCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
-            ReplayGui.open((Player) commandSender, ReplayMenu.getInstance().getConfig().getConfigurationSection("gui.default"));
+            Player player = ((Player) commandSender);
+            new ReplayGui(player, ReplayMenu.getInstance().isUseName() ? player.getName() : player.getUniqueId().toString()).open();
         }
         return false;
     }
