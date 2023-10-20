@@ -4,6 +4,8 @@ main: re.imc.replaymenu.ReplayMenu
 softdepend:
   - ReplaySystem
   - helper
+depend:
+  - XReplayExtendAPI
 commands:
   replaygui:
     permission: "replay.gui"
