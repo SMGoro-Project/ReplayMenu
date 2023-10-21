@@ -5,5 +5,7 @@
 - XReplay (optional, for replay servers)
 
 
-**Permissions**
-- /replaygui `replay.gui`
+**Commands & Permissions**
+- `replay.gui` /replaygui - own replays
+- `replay.gui.other` /replaygui <id> - view replays from other players
+- `replay.gui.all` /replaygui all - view all replays
