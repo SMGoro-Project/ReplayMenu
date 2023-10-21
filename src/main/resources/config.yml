@@ -29,6 +29,11 @@ gui:
         display-name: '&a'
         slot: 9-17
 
+      filler-bottom:
+        material: BLACK_STAINED_GLASS_PANE
+        display-name: '&a'
+        slot: 45-53
+
       games-previous-page:
         material: ARROW
         display-name: '&aPrevious Page'
@@ -45,24 +50,38 @@ gui:
         material: ARROW
         display-name: '&aNext Page'
         slot: 53
-
+        lore:
+          - "%page%/%maxPage%"
       games-previous-page-end:
         material: BARRIER
         display-name: '&aPrevious Page'
         slot: 0
+        lore:
+          - "%page%/%maxPage%"
       games-next-page-end:
         material: BARRIER
         display-name: '&aNext Page'
         slot: 8
+        lore:
+          - "%page%/%maxPage%"
       replays-previous-page-end:
         material: BARRIER
         display-name: '&aPrevious Page'
         slot: 45
+        lore:
+          - "%page%/%maxPage%"
       replays-next-page-end:
         material: BARRIER
         display-name: '&aNext Page'
         slot: 53
+        lore:
+          - "%page%/%maxPage%"
 
       replay:
         material: "RECORD_3"
         display-name: '&a%id%'
+        lore:
+          - "  &7Server: &e%name%"
+          - "  &7Duration: &e%length%"
+          - "  &7Date: &e%time%"
+          - "  &7Memory: &e%storage%"

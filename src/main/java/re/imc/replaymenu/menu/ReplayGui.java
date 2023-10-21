@@ -67,10 +67,8 @@ public class ReplayGui extends ConfigurableGui {
     private void updateButtons() {
 
         PlaceholderUtil pagePlaceholder = new PlaceholderUtil();
-        pagePlaceholder.add("%gamesPage%", String.valueOf(gamesPagination.getCurrentPage() + 1));
-        pagePlaceholder.add("%gamesMaxPage%", String.valueOf(gamesPagination.getLastPage() + 1));
-        pagePlaceholder.add("%replaysPage%", String.valueOf(replaysPagination.getCurrentPage() + 1));
-        pagePlaceholder.add("%replaysMaxPage%", String.valueOf(replaysPagination.getLastPage() + 1));
+        pagePlaceholder.add("%page%", String.valueOf(gamesPagination.getCurrentPage() + 1));
+        pagePlaceholder.add("%maxPage%", String.valueOf(gamesPagination.getLastPage() + 1));
 
         if (gamesPagination.getCurrentPage() != 0) {
             addConfigIcon("games-previous-page", pagePlaceholder).onClick(e -> {
@@ -80,6 +78,10 @@ public class ReplayGui extends ConfigurableGui {
         } else {
             addConfigIcon("games-previous-page-end", pagePlaceholder);
         }
+        pagePlaceholder = new PlaceholderUtil();
+        pagePlaceholder.add("%page%", String.valueOf(replaysPagination.getCurrentPage() + 1));
+        pagePlaceholder.add("%maxPage%", String.valueOf(replaysPagination.getLastPage() + 1));
+
         if (!gamesPagination.isLastPage()) {
             System.out.println("last page" + replaysPagination.getLastPage());
             addConfigIcon("games-next-page", pagePlaceholder).onClick(e -> {
